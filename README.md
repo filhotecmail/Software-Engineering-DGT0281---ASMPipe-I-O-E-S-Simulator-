@@ -19,3 +19,21 @@ Ao focar na E/S programável, o ASMPipe oferece percepções profundas sobre a a
 
 <img width="512" height="512" alt="image" src="https://github.com/user-attachments/assets/43ce728a-f74a-4453-b1b3-7aa50d9bfa87" />
 
+# Técnicas de Gerenciamento de E/S
+
+O gerenciamento de operações de E/S pode ser realizado de três maneiras distintas. A **E/S programada** é o método mais direto, onde o processador se encarrega de todo o processo. Ele executa instruções para verificar o status do dispositivo, emitir comandos e transferir os dados. No entanto, o processador fica inativo enquanto aguarda o módulo de E/S, o que pode levar a um desperdício de ciclos se o dispositivo periférico for significativamente mais lento.
+
+Para evitar essa ociosidade, a **E/S controlada por interrupção** permite que o processador inicie uma operação de E/S e retome imediatamente suas tarefas. O módulo de E/S notifica o processador com um sinal de interrupção somente quando a operação foi finalizada, permitindo um uso mais eficiente dos recursos do sistema.
+
+A técnica mais avançada é o **acesso direto à memória (DMA)**. Diferente das outras, o DMA permite que a transferência de dados entre um módulo de E/S e a memória principal ocorra sem a participação do processador. Isso libera o processador para realizar outras atividades, resultando em um desempenho superior, especialmente em grandes transferências de dados.
+
+Essas técnicas podem ser categorizadas com base na participação do processador e no uso de interrupções, conforme ilustrado na tabela abaixo.
+
+### Tabela: Métodos de Entrada e Saída
+
+| | **Não Interrompível** | **Com Interrupção** |
+| :--- | :--- | :--- |
+| **Transferência Intermediada pelo Processador** | E/S programada | E/S controlada por interrupção |
+| **Transferência Direta (sem Processador)** | | Acesso direto à memória (DMA) |
+
+
