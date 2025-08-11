@@ -36,4 +36,58 @@ Essas técnicas podem ser categorizadas com base na participação do processado
 | **Transferência Intermediada pelo Processador** | E/S programada | E/S controlada por interrupção |
 | **Transferência Direta (sem Processador)** | | Acesso direto à memória (DMA) |
 
+## Visão Geral da E/S Programada
+
+Quando um programa em execução no processador requer uma operação de E/S, o processador executa uma instrução que emite um comando ao módulo de E/S. Nesta modalidade, o processador aguarda a conclusão da operação. Para isso, ele é incumbido de inspecionar periodicamente o estado do módulo de E/S, consultando seus registradores de estado até determinar que a operação foi finalizada. A característica central da E/S programada é que o processador não é interrompido; ele mesmo deve verificar o status.
+
+### Comandos de E/S
+
+Para iniciar uma operação de E/S, o processador envia um comando ao módulo de E/S e a um dispositivo externo, especificando-o por meio de um endereço. Os comandos são tipicamente categorizados em quatro funções básicas:
+
+* **Controle:** Utilizado para ativar o periférico e instruí-lo a realizar uma tarefa específica. Exemplos incluem o comando para rebobinar uma fita magnética ou avançar o registro de dados. A funcionalidade exata depende do tipo de dispositivo.
+* **Teste:** Usado para examinar as condições do módulo de E/S ou do periférico, como a disponibilidade para uso e a detecção de erros. O processador precisa confirmar que o periférico está pronto antes de prosseguir.
+* **Leitura:** O módulo de E/S adquire um item de dados do periférico e o armazena em um buffer interno (geralmente um registrador de dados). O processador pode então obter este item, solicitando a leitura do registrador do módulo.
+* **Escrita:** O processador fornece um item de dados (byte ou palavra) ao módulo de E/S. O módulo então o transmite do seu registrador de dados para o periférico.
+
+Em um cenário típico de E/S programada, o processador deve emitir uma instrução de verificação de estado para cada palavra de dados transferida. Esta necessidade de uma espera ativa (loop de verificação de estado) a cada transferência de palavra é a principal desvantagem dessa técnica, pois mantém o processador ocupado desnecessariamente.
+
++------------------------------------+
+|  INÍCIO: Processador Executa o Programa |
++------------------------------------+
+                  |
+                  v
++------------------------------------+
+|   Encontrar uma Instrução de E/S   |
++------------------------------------+
+                  |
+                  v
++------------------------------------+
+|    Processador Emite Comando de E/S|
+|        para o Módulo de E/S        |
++------------------------------------+
+                  |
+                  v
++------------------------------------+
+|    Processador Inicia Loop de Espera |
+|  (Busy-wait): Inspecionar o Estado   |
++------------------------------------+
+                  |
+                  v
++------------------------------------+
+|  DECISÃO: A operação de E/S foi concluída? |
++------------------------------------+
+        /                          \
+       /                            \
+      v (NÃO)                       v (SIM)
++----------------+          +----------------------------------+
+| Volta para o topo|          |   Processador Executa a Transferência  |
+| da verificação |          | (Leitura/Escrita) do dado       |
++----------------+          +----------------------------------+
+                                             |
+                                             v
+                                  +------------------------------------+
+                                  | FIM: Processador Retoma a Execução |
+                                  |        do Programa Principal         |
+                                  +------------------------------------+
+
 
