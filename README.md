@@ -54,40 +54,40 @@ Em um cenário típico de E/S programada, o processador deve emitir uma instruç
 +------------------------------------+
 |  INÍCIO: Processador Executa o Programa |
 +------------------------------------+
-                  |
-                  v
+|
+v
 +------------------------------------+
 |   Encontrar uma Instrução de E/S   |
 +------------------------------------+
-                  |
-                  v
+|
+v
 +------------------------------------+
 |    Processador Emite Comando de E/S|
 |        para o Módulo de E/S        |
 +------------------------------------+
-                  |
-                  v
+|
+v
 +------------------------------------+
 |    Processador Inicia Loop de Espera |
 |  (Busy-wait): Inspecionar o Estado   |
 +------------------------------------+
-                  |
-                  v
+|
+v
 +------------------------------------+
 |  DECISÃO: A operação de E/S foi concluída? |
 +------------------------------------+
-        /                          \
-       /                            \
-      v (NÃO)                       v (SIM)
+/                          
+
+/                            
+
+v (NÃO)                       v (SIM)
 +----------------+          +----------------------------------+
 | Volta para o topo|          |   Processador Executa a Transferência  |
 | da verificação |          | (Leitura/Escrita) do dado       |
 +----------------+          +----------------------------------+
-                                             |
-                                             v
-                                  +------------------------------------+
-                                  | FIM: Processador Retoma a Execução |
-                                  |        do Programa Principal         |
-                                  +------------------------------------+
-
-
+|
+v
++------------------------------------+
+| FIM: Processador Retoma a Execução |
+|        do Programa Principal         |
++------------------------------------+
