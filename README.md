@@ -12,3 +12,6 @@ Data Transfer Logic: Hand-coded routines for writing bytes into the buffer and r
 Flow Control: The simulator includes simple synchronization logic to prevent data overwrites (writing to a full pipe) and underruns (reading from an empty pipe).
 
 By focusing on programmable I/O, ASMPipe offers deep insights into a computer’s architecture and the foundational principles that modern operating systems are built upon. It's a perfect resource for students and enthusiasts who want to master low-level programming and understand the true meaning of "input/output."
+
+<img width="512" height="512" alt="image" src="https://github.com/user-attachments/assets/43ce728a-f74a-4453-b1b3-7aa50d9bfa87" />
+
