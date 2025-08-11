@@ -51,4 +51,5 @@ Para iniciar uma operação de E/S, o processador envia um comando ao módulo de
 
 Em um cenário típico de E/S programada, o processador deve emitir uma instrução de verificação de estado para cada palavra de dados transferida. Esta necessidade de uma espera ativa (loop de verificação de estado) a cada transferência de palavra é a principal desvantagem dessa técnica, pois mantém o processador ocupado desnecessariamente.
 
-<img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/8028f4ad-2bfa-43ab-aee7-ee5ef80f7d92" />
+<img width="745" height="506" alt="image" src="https://github.com/user-attachments/assets/c85bea54-5df3-44da-b893-2a0d93e3d8d4" />
+
