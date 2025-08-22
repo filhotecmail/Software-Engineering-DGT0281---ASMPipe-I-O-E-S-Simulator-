@@ -398,7 +398,7 @@ Implementações modernas adicionadas ao projeto:
 >
 > **Stallings, W. (2010). Arquitetura e Organização de Computadores, 8ª ed., p. 235**
 
-**🔧 Aplicação Prática:** Nosso simulador implementa exatamente este protocolo na classe `DMAController` em Python, com métodos para configuração e execução de transferências.
+**🔧 Aplicação Prática:** O simulador implementa exatamente este protocolo na classe `DMAController` em Python, com métodos para configuração e execução de transferências.
 
 ---
 
@@ -408,7 +408,7 @@ Implementações modernas adicionadas ao projeto:
 >
 > **Stallings, W. (2010). Arquitetura e Organização de Computadores, 8ª ed., p. 236**
 
-**🏗️ Arquitetura ASMPipe:** Implementamos a terceira opção - um controlador DMA central com múltiplos canais virtuais, permitindo operações simultâneas de diferentes dispositivos.
+**🏗️ Arquitetura ASMPipe:** Implementei a terceira opção - um controlador DMA central com múltiplos canais virtuais, permitindo operações simultâneas de diferentes dispositivos.
 
 ---
 
@@ -418,7 +418,7 @@ Implementações modernas adicionadas ao projeto:
 >
 > **Stallings, W. (2010). Arquitetura e Organização de Computadores, 8ª ed., p. 98**
 
-**⚖️ Implementação:** Nossa classe `BusArbiter` implementa arbitragem centralizada com algoritmo de prioridade fixa, conforme descrito por Stallings.
+**⚖️ Implementação:** A classe `BusArbiter` implementa arbitragem centralizada com algoritmo de prioridade fixa, conforme descrito por Stallings.
 
 ---
 
@@ -428,7 +428,7 @@ Implementações modernas adicionadas ao projeto:
 >
 > **Stallings, W. (2010). Arquitetura e Organização de Computadores, 8ª ed., p. 238**
 
-**📊 Comparação Implementada:** Nossos testes de performance em `performance_tests.py` demonstram exatamente esta diferença, mostrando a eficiência superior do DMA sobre E/S programada.
+**📊 Comparação Implementada:** Os testes de performance em `performance_tests.py` demonstram exatamente esta diferença, mostrando a eficiência superior do DMA sobre E/S programada.
 
 ---
 
@@ -438,77 +438,7 @@ Implementações modernas adicionadas ao projeto:
 >
 > **Stallings, W. (2010). Arquitetura e Organização de Computadores, 8ª ed., p. 241**
 
-**🔄 Implementação Circular:** Nossa implementação em `circular_dma.py` segue exatamente este padrão, com ponteiros automáticos de wrap-around e detecção de overflow/underflow.
-
-## 🔍 Debugging e Depuração
-
-### Ferramentas Disponíveis
-- Logs detalhados de operações DMA
-- Visualização de estado do barramento
-- Métricas de performance em tempo real
-- Simulação de falhas para teste de robustez
-
-### Técnicas de Depuração
-- Breakpoints em código Assembly
-- Monitoramento de registradores
-- Análise de dumps de memória
-- Profiling de performance
-
-### Solução de Problemas Comuns
-- Conflitos de barramento
-- Deadlocks em transferências DMA
-- Corrupção de dados
-- Problemas de sincronização
-
-## 🎓 Aplicações Educacionais
-
-### Para Estudantes
-- Laboratórios práticos de arquitetura de computadores
-- Projetos de sistemas embarcados
-- Estudos de caso em otimização de E/S
-- Desenvolvimento de drivers de dispositivo
-
-### Para Professores
-- Material didático interativo
-- Demonstrações em tempo real
-- Exercícios práticos graduais
-- Avaliação de conceitos teóricos
-
-## 🔬 Pesquisa e Extensões
-
-### Possíveis Melhorias
-- Implementação de novos algoritmos de arbitragem
-- Suporte a arquiteturas ARM
-- Interface web para acesso remoto
-- Integração com simuladores de hardware
-
-### Trabalhos Relacionados
-- Simuladores de arquitetura (MARS, SPIM)
-- Ferramentas de análise de performance
-- Ambientes de desenvolvimento embarcado
-- Plataformas de ensino de arquitetura
-
-## 📈 Roadmap
-
-- [ ] Suporte a múltiplas arquiteturas
-- [ ] Interface web responsiva
-- [ ] Integração com ferramentas de CI/CD
-- [ ] Documentação interativa
-- [ ] Suporte a plugins personalizados
-- [ ] Análise avançada de performance
-- [ ] Simulação de redes de interconexão
-- [ ] Suporte a programação paralela
-
-## 🤝 Colaboradores
-
-Este projeto é desenvolvido como parte da disciplina de Engenharia de Software (DGT0281) e conta com contribuições de estudantes e professores interessados em arquitetura de computadores e sistemas de baixo nível.
-
-## 📞 Suporte
-
-Para dúvidas, sugestões ou problemas:
-- Abra uma issue no GitHub
-- Entre em contato através dos canais da disciplina
-- Consulte a documentação técnica em `src/docs/`
+**🔄 Implementação Circular:** Minha implementação em `circular_dma.py` segue exatamente este padrão, com ponteiros automáticos de wrap-around e detecção de overflow/underflow.
 
 ## 🏆 Reconhecimentos
 
@@ -581,25 +511,6 @@ Ao final deste projeto, os estudantes devem ser capazes de:
 - Strace para rastreamento de system calls
 - Ltrace para rastreamento de library calls
 
-## 🌐 Recursos Online
-
-### Documentação Oficial
-- [Intel Software Developer Manuals](https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html)
-- [NASM Documentation](https://www.nasm.us/docs.php)
-- [Linux Kernel Documentation](https://www.kernel.org/doc/)
-
-### Tutoriais e Cursos
-- Assembly Language Programming
-- Computer Architecture Fundamentals
-- Operating Systems Concepts
-- Embedded Systems Development
-
-### Comunidades
-- Stack Overflow (tags: assembly, x86, dma)
-- Reddit: r/asm, r/ComputerEngineering
-- Discord: Assembly Programming Community
-- IRC: ##asm on Freenode
-
 ## 📊 Estatísticas do Projeto
 
 - **Linhas de código Assembly**: ~2,000
@@ -615,8 +526,7 @@ Ao final deste projeto, os estudantes devem ser capazes de:
 
 ### Bibliografia Principal
 
-**📖 William Stallings - "Arquitetura e Organização de Computadores", 10ª edição, Pearson**
-- **Localização**: `referencias/William_Stallings_Arquitetura_e_Organização_de_Computadores_Pearson.pdf`
+**📖 William Stallings - "Arquitetura e Organização de Computadores", 5º edição, Pearson**
 - **Capítulos Relevantes**:
   - **Capítulo 7**: "Entrada e Saída" - Fundamentos de E/S e DMA
   - **Capítulo 7.4**: "Direct Memory Access (DMA)" - Modos de transferência
