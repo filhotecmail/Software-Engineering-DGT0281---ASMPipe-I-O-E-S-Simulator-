@@ -26,16 +26,16 @@ jobs:
     
     - name: Run Python syntax check
       run: |
-        python -m py_compile src/python/*.py
+        python -m py_compile *.py
     
     - name: Run flake8 linting
       run: |
-        flake8 src/python/ --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 src/python/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        flake8 *.py --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 *.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     
     - name: Check code formatting with black
       run: |
-        black --check --diff src/python/
+        black --check --diff *.py
     
     - name: Validate project structure
       run: |

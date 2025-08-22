@@ -48,7 +48,7 @@ jobs:
     - name: Test NASM in Docker
       run: |
         docker run --rm simulador-dma:latest nasm -v
-        docker run --rm simulador-dma:latest sh -c "cd src/assembly && nasm -f elf64 dma_controller.asm -o dma_controller.o && echo 'Assembly compilation successful'"
+        docker run --rm simulador-dma:latest sh -c "mkdir -p build && nasm -f elf32 src/assembly/dma_controller.asm -o build/dma_controller.o && echo 'Assembly compilation successful'"
     
     - name: Test Docker container startup
       run: |

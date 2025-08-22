@@ -139,7 +139,18 @@ dma_setup_channel:
     mov eax, -1                ; Ops, esse canal não existe
     jmp .setup_exit
     
-
+.channel_busy:
+    ; Aqui eu aviso que o canal está ocupado
+    push ecx
+    push edx
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, msg_dma_busy
+    mov edx, 23
+    int 0x80
+    pop edx
+    pop ecx
+    mov eax, -2                ; Canal ocupado, tente mais tarde
     
 .setup_exit:
     pop eax
