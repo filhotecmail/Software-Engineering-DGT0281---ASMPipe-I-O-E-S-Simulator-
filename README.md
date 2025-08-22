@@ -141,6 +141,9 @@ make all
 make test
 ```
 
+<img width="737" height="355" alt="image" src="https://github.com/user-attachments/assets/b539328b-581b-4bf9-936e-353df23162e5" />
+
+
 ### 🐳 Usando Docker
 
 ```bash
