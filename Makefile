@@ -7,17 +7,25 @@ LD = ld
 ASM_FLAGS = -f elf32
 LD_FLAGS = -m elf_i386
 
+# Diretórios
+SRC_DIR = src
+ASM_DIR = $(SRC_DIR)/assembly
+PYTHON_DIR = $(SRC_DIR)/python
+BIN_DIR = bin
+DOCS_DIR = docs
+SCRIPTS_DIR = scripts
+
 # Arquivos
-SOURCE = asmpipe.asm
+SOURCE = $(ASM_DIR)/asmpipe.asm
 OBJECT = asmpipe.o
-TARGET = asmpipe
+TARGET = $(BIN_DIR)/asmpipe
 
 # Arquivos DMA
-DMA_SOURCE = asmpipe_dma.asm
+DMA_SOURCE = $(ASM_DIR)/asmpipe_dma.asm
 DMA_OBJECT = asmpipe_dma.o
-DMA_TARGET = asmpipe_dma
-DMA_CONTROLLER = dma_controller.asm
-DMA_ADVANCED = dma_advanced.asm
+DMA_TARGET = $(BIN_DIR)/asmpipe_dma
+DMA_CONTROLLER = $(ASM_DIR)/dma_controller.asm
+DMA_ADVANCED = $(ASM_DIR)/dma_advanced.asm
 
 # Regra padrão - compila ambas as versões
 all: $(TARGET) $(DMA_TARGET)
@@ -29,7 +37,7 @@ original: $(TARGET)
 dma: $(DMA_TARGET)
 
 # Compilar o executável
-$(TARGET): $(OBJECT)
+$(TARGET): $(OBJECT) | $(BIN_DIR)
 	@echo "Linkando $(TARGET)..."
 	$(LD) $(LD_FLAGS) -o $(TARGET) $(OBJECT)
 	@echo "Executável $(TARGET) criado com sucesso!"
@@ -37,10 +45,10 @@ $(TARGET): $(OBJECT)
 # Compilar o objeto original
 $(OBJECT): $(SOURCE)
 	@echo "Compilando $(SOURCE)..."
-	$(ASM) $(ASM_FLAGS) $(SOURCE) -o $(OBJECT)
+	$(ASM) $(ASM_FLAGS) -I$(ASM_DIR) $(SOURCE) -o $(OBJECT)
 
 # Compilar executável DMA
-$(DMA_TARGET): $(DMA_OBJECT)
+$(DMA_TARGET): $(DMA_OBJECT) | $(BIN_DIR)
 	@echo "Linkando $(DMA_TARGET)..."
 	$(LD) $(LD_FLAGS) -o $(DMA_TARGET) $(DMA_OBJECT)
 	@echo "Executável $(DMA_TARGET) criado com sucesso!"
@@ -48,7 +56,11 @@ $(DMA_TARGET): $(DMA_OBJECT)
 # Compilar objeto DMA
 $(DMA_OBJECT): $(DMA_SOURCE) $(DMA_CONTROLLER) $(DMA_ADVANCED)
 	@echo "Compilando $(DMA_SOURCE) com dependências DMA..."
-	$(ASM) $(ASM_FLAGS) $(DMA_SOURCE) -o $(DMA_OBJECT)
+	$(ASM) $(ASM_FLAGS) -I$(ASM_DIR) $(DMA_SOURCE) -o $(DMA_OBJECT)
+
+# Criar diretório bin
+$(BIN_DIR):
+	@mkdir -p $(BIN_DIR)
 
 # Executar o simulador original
 run: $(TARGET)
@@ -85,7 +97,8 @@ performance-test: $(DMA_TARGET)
 # Limpar arquivos gerados
 clean:
 	@echo "Limpando arquivos gerados..."
-	rm -f $(OBJECT) $(TARGET) $(DMA_OBJECT) $(DMA_TARGET)
+	rm -f $(OBJECT) $(DMA_OBJECT)
+	rm -rf $(BIN_DIR)
 	@echo "Limpeza concluída!"
 
 # Verificar dependências
@@ -108,10 +121,12 @@ info:
 	@echo "  make check-deps - Verifica dependências"
 	@echo "  make info     - Mostra estas informações"
 	@echo ""
-	@echo "Arquivos:"
-	@echo "  $(SOURCE)     - Código fonte em Assembly"
-	@echo "  $(OBJECT)     - Arquivo objeto"
-	@echo "  $(TARGET)     - Executável final"
+	@echo "Estrutura do projeto:"
+	@echo "  $(ASM_DIR)/   - Códigos fonte em Assembly"
+	@echo "  $(PYTHON_DIR)/ - Scripts Python e GUI"
+	@echo "  $(BIN_DIR)/   - Executáveis compilados"
+	@echo "  $(DOCS_DIR)/  - Documentação"
+	@echo "  $(SCRIPTS_DIR)/ - Scripts de automação"
 
 # Debug: compilar com símbolos de debug
 debug: ASM_FLAGS += -g -F dwarf

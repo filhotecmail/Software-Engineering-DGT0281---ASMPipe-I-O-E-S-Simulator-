@@ -57,6 +57,62 @@ sudo apt-get update
 sudo apt-get install nasm build-essential
 ```
 
+## 🐳 Execução com Docker
+
+### Pré-requisitos Docker
+- **Docker** instalado no sistema
+- **Permissões** para executar containers
+
+### Build e Execução
+
+#### Usando Scripts Automatizados
+```bash
+# Build da imagem Docker
+./scripts/docker-build.sh
+
+# Execução do container
+./scripts/docker-run.sh
+```
+
+#### Comandos Docker Manuais
+```bash
+# Build da imagem
+sudo docker build -t simulador-dma:latest .
+
+# Execução interativa
+sudo docker run -it --rm simulador-dma:latest
+
+# Execução em background
+sudo docker run -d --name dma-simulator simulador-dma:latest
+
+# Execução com volume (para desenvolvimento)
+sudo docker run -it --rm -v $(pwd):/app simulador-dma:latest
+```
+
+### Características da Imagem Docker
+
+- **Base**: Ubuntu 22.04 LTS
+- **Python**: 3.10+ com pip e bibliotecas (colorama, termcolor, rich)
+- **Compiladores**: GCC, G++, NASM (Netwide Assembler)
+- **Ferramentas**: build-essential, make, git, vim
+- **Tamanho**: ~500MB (otimizada)
+- **Ambiente**: Configurado para compilação Assembly e execução do simulador
+
+### Vantagens do Docker
+
+✅ **Portabilidade**: Executa em qualquer sistema com Docker  
+✅ **Consistência**: Ambiente idêntico para todos os usuários  
+✅ **Isolamento**: Não interfere no sistema host  
+✅ **Facilidade**: Setup automático de todas as dependências  
+✅ **Reprodutibilidade**: Resultados consistentes entre execuções  
+
+### Arquivos Docker
+
+- `Dockerfile` - Definição da imagem com todas as dependências
+- `.dockerignore` - Otimização do build excluindo arquivos desnecessários
+- `scripts/docker-build.sh` - Script automatizado para build da imagem
+- `scripts/docker-run.sh` - Script para execução do container
+
 ## 🔧 Compilação e Execução
 
 ### Comandos Disponíveis
@@ -309,28 +365,59 @@ O simulador implementa **E/S programada**, onde:
 
 ## 📁 Estrutura do Projeto
 
-### Arquivos Principais
+### Organização em Pastas
 
-#### Versão Original
+```
+ASMPipe-I-O-E-S-Simulator/
+├── src/                     # Código fonte
+│   ├── assembly/           # Arquivos Assembly (.asm)
+│   │   ├── asmpipe.asm     # Implementação principal
+│   │   ├── asmpipe_dma.asm # Versão com DMA
+│   │   ├── dma_controller.asm # Controlador DMA
+│   │   ├── dma_advanced.asm   # Funcionalidades avançadas
+│   │   └── demo.asm        # Demonstrações
+│   └── python/             # Scripts Python
+│       ├── gui_dma_tester.py  # Interface gráfica
+│       ├── test_scenarios.py  # Cenários de teste
+│       └── requirements.txt   # Dependências Python
+├── docs/                   # Documentação
+│   ├── README.md          # Documentação principal
+│   ├── DMA_DOCUMENTATION.md # Documentação DMA
+│   └── ISSUES_TEMPLATE.md # Template de issues
+├── scripts/               # Scripts de automação
+│   ├── docker-build.sh    # Build Docker
+│   ├── docker-run.sh      # Execução Docker
+│   └── run_gui.sh         # Execução da GUI
+├── bin/                   # Executáveis compilados
+│   ├── asmpipe           # Versão original
+│   └── asmpipe_dma       # Versão com DMA
+├── Dockerfile            # Configuração Docker
+├── .dockerignore         # Exclusões Docker
+└── Makefile             # Automação de build
+```
+
+### Arquivos por Categoria
+
+#### Código Assembly (`src/assembly/`)
 - `asmpipe.asm` - Implementação principal do simulador
-- `Makefile` - Automação de compilação e execução
-- `README.md` - Documentação principal
-
-#### 🆕 Arquivos DMA
+- `asmpipe_dma.asm` - Integração completa DMA + ASMPipe
 - `dma_controller.asm` - Controlador DMA básico com 4 canais
 - `dma_advanced.asm` - Funcionalidades avançadas (arbitragem, burst, prioridades)
-- `asmpipe_dma.asm` - Integração completa DMA + ASMPipe
-- `DMA_DOCUMENTATION.md` - Documentação detalhada do sistema DMA
-- `ISSUES_TEMPLATE.md` - Template para futuras melhorias
+- `demo.asm` - Demonstrações avançadas
 
-### Executáveis Gerados
+#### Scripts Python (`src/python/`)
+- `gui_dma_tester.py` - Interface gráfica interativa
+- `test_scenarios.py` - Cenários de teste automatizados
+- `requirements.txt` - Dependências Python
+
+#### Executáveis (`bin/`)
 - `asmpipe` - Versão original do simulador
 - `asmpipe_dma` - Versão com funcionalidades DMA
 
 ## 📚 Documentação Adicional
 
-- **[DMA_DOCUMENTATION.md](DMA_DOCUMENTATION.md)** - Documentação completa do sistema DMA
-- **[ISSUES_TEMPLATE.md](ISSUES_TEMPLATE.md)** - Template para contribuições e melhorias
+- **[DMA_DOCUMENTATION.md](docs/DMA_DOCUMENTATION.md)** - Documentação completa do sistema DMA
+- **[ISSUES_TEMPLATE.md](docs/ISSUES_TEMPLATE.md)** - Template para contribuições e melhorias
 
 ## 🚀 Próximos Passos
 
@@ -341,14 +428,7 @@ Para futuras melhorias, consulte os issues criados:
 4. **Documentação Expandida** - Tutoriais e exemplos avançados
 5. **Integração Assembly-Python** - Execução real do código Assembly via interface
 
-```
-ASMPipe-I-O-E-S-Simulator/
-├── asmpipe.asm          # Código principal do simulador
-├── demo.asm             # Demonstrações avançadas
-├── Makefile             # Automação de build
-├── README.md            # Esta documentação
-└── LICENSE              # Licença do projeto
-```
+
 
 ## 🐛 Tratamento de Erros
 
@@ -387,11 +467,11 @@ O projeto agora inclui uma interface gráfica colorida e interativa para testar 
 #### Como usar:
 ```bash
 # Instalar dependências e executar
-./run_gui.sh
+./scripts/run_gui.sh
 
 # Ou manualmente
-pip install colorama
-python3 gui_dma_tester.py
+pip install -r src/python/requirements.txt
+python3 src/python/gui_dma_tester.py
 ```
 
 #### Funcionalidades da Interface:
