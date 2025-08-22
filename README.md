@@ -1,58 +1,22 @@
 <div align="center">
 
-# UNIVERSIDADE FEDERAL DO RIO GRANDE DO NORTE
-## CENTRO DE TECNOLOGIA
-### DEPARTAMENTO DE ENGENHARIA DE COMPUTAÇÃO E AUTOMAÇÃO
+# UNIVERSIDADE ESTACIO
+### DEPARTAMENTO DE ENGENHARIA DE COMPUTAÇÃO 
 
 ---
 
 # ASMPipe I/O E/S Simulator
 ## Simulador Educacional de Pipeline Assembly com DMA e Controlador de Barramento
-
-### Trabalho de Conclusão da Disciplina
-**Engenharia de Software - DGT0281**
-
----
-
-**Autor(es):**  
-[Nome do Estudante]  
-[Matrícula]  
-[email@ufrn.edu.br]
-
-**Professor Orientador:**  
-[Nome do Professor]  
-[Departamento de Engenharia de Computação e Automação]
-
 **Data:** Janeiro de 2025  
 **Semestre:** 2024.2
 
----
-
-![UFRN Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Bras%C3%A3o_da_Universidade_Federal_do_Rio_Grande_do_Norte.svg/200px-Bras%C3%A3o_da_Universidade_Federal_do_Rio_Grande_do_Norte.svg.png)
-
-</div>
-
----
-
-## 📋 Resumo Executivo
+## 📋 Resumo 
 
 Este projeto apresenta um simulador educacional completo para o estudo de arquitetura de computadores, focando especificamente em operações de Entrada/Saída (E/S), Direct Memory Access (DMA) e controle de barramento. O sistema foi desenvolvido como uma ferramenta pedagógica que combina implementações de baixo nível em Assembly x86 com interfaces de alto nível em Python, proporcionando uma experiência prática e visual dos conceitos fundamentais de arquitetura de computadores.
 
 O simulador implementa os principais conceitos descritos por William Stallings em "Arquitetura e Organização de Computadores", incluindo múltiplos modos de transferência DMA (burst, cycle stealing e transparente), arbitragem de barramento centralizada e buffers circulares para aplicações de tempo real. A validação experimental demonstra eficiência de 89% na utilização do barramento e redução de 92% no overhead da CPU durante transferências DMA.
 
 **Palavras-chave:** DMA, Assembly x86, Arquitetura de Computadores, Simulação, E/S, Barramento
-
----
-
-## 📋 Abstract
-
-This project presents a comprehensive educational simulator for computer architecture studies, specifically focusing on Input/Output (I/O) operations, Direct Memory Access (DMA), and bus control. The system was developed as a pedagogical tool that combines low-level Assembly x86 implementations with high-level Python interfaces, providing a practical and visual experience of fundamental computer architecture concepts.
-
-The simulator implements key concepts described by William Stallings in "Computer Organization and Architecture," including multiple DMA transfer modes (burst, cycle stealing, and transparent), centralized bus arbitration, and circular buffers for real-time applications. Experimental validation demonstrates 89% efficiency in bus utilization and 92% reduction in CPU overhead during DMA transfers.
-
-**Keywords:** DMA, Assembly x86, Computer Architecture, Simulation, I/O, Bus System
-
----
 
 ## 📚 Sumário
 
