@@ -144,7 +144,6 @@ class DMAGUITester:
         messages = [
             "💡 'Cada teste me ajuda a entender melhor como DMA funciona!'",
             "🎓 'Estou aprendendo muito sobre arquitetura de computadores!'",
-            "🚀 'Ver o código Assembly funcionando é muito satisfatório!'",
             "📚 'A teoria da aula faz muito mais sentido agora!'",
             "⭐ 'Programar em Assembly é desafiador, mas gratificante!'"
         ]
