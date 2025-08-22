@@ -1,8 +1,29 @@
-# ASMPipe I/O Simulator
+# ASMPipe I/O
 
-ASMPipe I/O é um simulador de pipe de E/S (Entrada/Saída) programável de baixo nível, implementado em **Assembly x86**. Este projeto demonstra conceitos fundamentais de sistemas operacionais ao emular um pipe de comunicação entre dois processos simulados.
+ASMPipe I/O é um simulador de pipe de E/S (Entrada/Saída) programável de baixo nível, implementado em **Assembly x86**. Este projeto demonstra conceitos fundamentais de sistemas operacionais e arquitetura de computadores.
 
-## 🚀 Características Implementadas
+## 📖 Conceitos Teóricos
+
+### E/S Programada
+
+Na E/S programada, o processador executa um programa que oferece controle direto sobre a operação de E/S, incluindo a detecção do estado do dispositivo, o envio de comandos de leitura ou escrita e a transferência dos dados. Quando o processador emite um comando para o módulo de E/S, ele é incumbido de inspecionar periodicamente o estado do módulo de E/S, consultando seus registradores de estado até determinar que a operação foi finalizada. A característica central da E/S programada é que o processador não é interrompido; ele mesmo deve verificar o status.
+
+### Comandos de E/S
+
+Para iniciar uma operação de E/S, o processador envia um comando ao módulo de E/S e a um dispositivo externo, especificando-o por meio de um endereço. Os comandos são tipicamente categorizados em quatro funções básicas:
+
+* **Controle:** Utilizado para ativar o periférico e instruí-lo a realizar uma tarefa específica. Exemplos incluem o comando para rebobinar uma fita magnética ou avançar o registro de dados. A funcionalidade exata depende do tipo de dispositivo.
+* **Teste:** Usado para examinar as condições do módulo de E/S ou do periférico, como a disponibilidade para uso e a detecção de erros. O processador precisa confirmar que o periférico está pronto antes de prosseguir.
+* **Leitura:** O módulo de E/S adquire um item de dados do periférico e o armazena em um buffer interno (geralmente um registrador de dados). O processador pode então obter este item, solicitando a leitura do registrador do módulo.
+* **Escrita:** O processador fornece um item de dados (byte ou palavra) ao módulo de E/S. O módulo então o transmite do seu registrador de dados para o periférico.
+
+Em um cenário típico de E/S programada, o processador deve emitir uma instrução de verificação de estado para cada palavra de dados transferida. Esta necessidade de uma espera ativa (loop de verificação de estado) a cada transferência de palavra é a principal desvantagem dessa técnica, pois mantém o processador ocupado desnecessariamente.
+
+<img width="745" height="506" alt="image" src="https://github.com/user-attachments/assets/c85bea54-5df3-44da-b893-2a0d93e3d8d4" />
+
+*Referência: William Stallings, "Arquitetura e Organização de Computadores", 10ª edição.*
+
+## 🚀 Implementação - Características
 
 - **Buffer Circular**: Implementação de um buffer circular de 256 bytes para armazenamento eficiente
 - **Operações de E/S**: Rotinas de leitura e escrita programáveis em Assembly
