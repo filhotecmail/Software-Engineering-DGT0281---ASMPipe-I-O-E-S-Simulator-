@@ -526,8 +526,7 @@ Ao final deste projeto, os estudantes devem ser capazes de:
 
 ### Bibliografia Principal
 
-**📖 William Stallings - "Arquitetura e Organização de Computadores", 10ª edição, Pearson**
-- **Localização**: `referencias/William_Stallings_Arquitetura_e_Organização_de_Computadores_Pearson.pdf`
+**📖 William Stallings - "Arquitetura e Organização de Computadores", 5º edição, Pearson**
 - **Capítulos Relevantes**:
   - **Capítulo 7**: "Entrada e Saída" - Fundamentos de E/S e DMA
   - **Capítulo 7.4**: "Direct Memory Access (DMA)" - Modos de transferência
