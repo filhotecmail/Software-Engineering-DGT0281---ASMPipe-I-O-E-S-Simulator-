@@ -1,0 +1,11 @@
+# Dependências para a Interface Gráfica do Simulador DMA
+# Criado por um estudante de Engenharia de Software
+
+# Para cores no terminal
+colorama>=0.4.4
+
+# Para melhor formatação de texto (opcional)
+termcolor>=1.1.0
+
+# Para animações no terminal (opcional)
+rich>=10.0.0
