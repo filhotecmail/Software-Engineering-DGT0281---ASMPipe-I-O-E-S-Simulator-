@@ -33,7 +33,7 @@ jobs:
     
     - name: Test Python syntax
       run: |
-        python -m py_compile *.py
+        python3 -m py_compile *.py
     
     - name: Test Assembly compilation
       run: |
@@ -43,9 +43,9 @@ jobs:
     
     - name: Run Python tests
       run: |
-        python -c "import gui_dma_tester; print('GUI module imported successfully')"
-        python -c "import dma_simulator; print('DMA simulator module imported successfully')"
-        python -c "import bus_controller; print('Bus controller module imported successfully')"
+        python3 -c "import sys; sys.path.append('src/python'); import gui_dma_tester; print('GUI module imported successfully')"
+        python3 -c "import dma_simulator; print('DMA simulator module imported successfully')"
+        python3 -c "import bus_controller; print('Bus controller module imported successfully')"
     
     - name: Build Docker image
       run: |
