@@ -146,4 +146,8 @@ check-syntax:
 	$(ASM) $(ASM_FLAGS) $(SOURCE) -o /dev/null
 	@echo "Sintaxe OK!"
 
-.PHONY: all original dma run run-dma run-both performance-test clean check-deps info debug install-deps check-syntax
+# Regra de teste - compila e verifica sintaxe
+test: all check-syntax
+	@echo "Testes básicos concluídos com sucesso!"
+
+.PHONY: all original dma run run-dma run-both performance-test clean check-deps info debug install-deps check-syntax test
