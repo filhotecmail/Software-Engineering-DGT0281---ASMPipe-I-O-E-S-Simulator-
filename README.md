@@ -1,52 +1,227 @@
-# Software-Engineering-DGT0281---ASMPipe-I-O-E-S-Simulator-
-# ASMPipe I/O
+# ASMPipe I/O Simulator
 
-ASMPipe I/O é um simulador de pipe de E/S (Entrada/Saída) programável de baixo nível, implementado em **Assembly x86**. Este projeto demonstra conceitos fundamentais de sistemas operacionais ao emular um pipe de comunicação entre dois processos simulados. Ele apresenta um **buffer circular** para armazenamento de dados e rotinas personalizadas para leitura e escrita no pipe, exibindo o gerenciamento direto de memória e primitivas de sincronização simples. O foco principal é na **E/S programável**, onde toda a lógica de transferência de dados é implementada manualmente no nível "bare-metal", sem depender de chamadas de sistema de alto nível ou de um kernel de sistema operacional existente.
+ASMPipe I/O é um simulador de pipe de E/S (Entrada/Saída) programável de baixo nível, implementado em **Assembly x86**. Este projeto demonstra conceitos fundamentais de sistemas operacionais ao emular um pipe de comunicação entre dois processos simulados.
 
-## Sobre o Projeto
+## 🚀 Características Implementadas
 
-O ASMPipe é um projeto educacional projetado para explorar a mecânica da **comunicação entre processos (IPC)** e da **E/S programável** a partir do zero. Desenvolvido inteiramente em Assembly x86, este simulador oferece uma visão prática de como funciona um pipe de comunicação clássico.
+- **Buffer Circular**: Implementação de um buffer circular de 256 bytes para armazenamento eficiente
+- **Operações de E/S**: Rotinas de leitura e escrita programáveis em Assembly
+- **Controle de Fluxo**: Lógica de sincronização para evitar overflow e underflow
+- **Gerenciamento de Memória**: Controle direto de ponteiros e memória
+- **Tratamento de Erros**: Detecção de condições de buffer cheio e vazio
 
-O objetivo principal do projeto é contornar as abstrações de um sistema operacional tradicional e implementar toda a lógica de E/S manualmente. Isso inclui:
+## 📋 Pré-requisitos
 
-* **Gerenciamento de Memória Personalizado:** Um buffer circular é usado como o núcleo do pipe, com ponteiros dedicados para lidar com as operações de leitura e escrita.
-* **Lógica de Transferência de Dados:** Rotinas codificadas manualmente para escrever bytes no buffer e lê-los, demonstrando controle direto sobre o movimento de dados no nível de registradores e memória.
-* **Controle de Fluxo:** O simulador inclui uma lógica de sincronização simples para evitar a sobrescrita de dados (escrever em um pipe cheio) e a leitura de dados inexistentes (ler de um pipe vazio).
+- **NASM** (Netwide Assembler)
+- **GNU ld** (linker)
+- **Sistema Linux** (testado em Ubuntu/Debian)
 
-<img width="512" height="512" alt="image" src="https://github.com/user-attachments/assets/43ce728a-f74a-4453-b1b3-7aa50d9bfa87" />
+### Instalação das Dependências
 
-# Técnicas de Gerenciamento de E/S
+```bash
+# Instalar automaticamente
+make install-deps
 
-O gerenciamento de operações de E/S pode ser realizado de três maneiras distintas. A **E/S programada** é o método mais direto, onde o processador se encarrega de todo o processo. Ele executa instruções para verificar o status do dispositivo, emitir comandos e transferir os dados. No entanto, o processador fica inativo enquanto aguarda o módulo de E/S, o que pode levar a um desperdício de ciclos se o dispositivo periférico for significativamente mais lento.
+# Ou manualmente
+sudo apt-get update
+sudo apt-get install nasm build-essential
+```
 
-Para evitar essa ociosidade, a **E/S controlada por interrupção** permite que o processador inicie uma operação de E/S e retome imediatamente suas tarefas. O módulo de E/S notifica o processador com um sinal de interrupção somente quando a operação foi finalizada, permitindo um uso mais eficiente dos recursos do sistema.
+## 🔧 Compilação e Execução
 
-A técnica mais avançada é o **acesso direto à memória (DMA)**. Diferente das outras, o DMA permite que a transferência de dados entre um módulo de E/S e a memória principal ocorra sem a participação do processador. Isso libera o processador para realizar outras atividades, resultando em um desempenho superior, especialmente em grandes transferências de dados.
+### Comandos Disponíveis
 
-Essas técnicas podem ser categorizadas com base na participação do processador e no uso de interrupções, conforme ilustrado na tabela abaixo.
+```bash
+# Verificar dependências
+make check-deps
 
-### Tabela: Métodos de Entrada e Saída
+# Compilar o projeto
+make
 
-| | **Não Interrompível** | **Com Interrupção** |
-| :--- | :--- | :--- |
-| **Transferência Intermediada pelo Processador** | E/S programada | E/S controlada por interrupção |
-| **Transferência Direta (sem Processador)** | | Acesso direto à memória (DMA) |
+# Compilar e executar
+make run
 
-## Visão Geral da E/S Programada
+# Limpar arquivos gerados
+make clean
 
-Quando um programa em execução no processador requer uma operação de E/S, o processador executa uma instrução que emite um comando ao módulo de E/S. Nesta modalidade, o processador aguarda a conclusão da operação. Para isso, ele é incumbido de inspecionar periodicamente o estado do módulo de E/S, consultando seus registradores de estado até determinar que a operação foi finalizada. A característica central da E/S programada é que o processador não é interrompido; ele mesmo deve verificar o status.
+# Mostrar informações do projeto
+make info
 
-### Comandos de E/S
+# Compilar versão debug
+make debug
 
-Para iniciar uma operação de E/S, o processador envia um comando ao módulo de E/S e a um dispositivo externo, especificando-o por meio de um endereço. Os comandos são tipicamente categorizados em quatro funções básicas:
+# Verificar sintaxe
+make check-syntax
+```
 
-* **Controle:** Utilizado para ativar o periférico e instruí-lo a realizar uma tarefa específica. Exemplos incluem o comando para rebobinar uma fita magnética ou avançar o registro de dados. A funcionalidade exata depende do tipo de dispositivo.
-* **Teste:** Usado para examinar as condições do módulo de E/S ou do periférico, como a disponibilidade para uso e a detecção de erros. O processador precisa confirmar que o periférico está pronto antes de prosseguir.
-* **Leitura:** O módulo de E/S adquire um item de dados do periférico e o armazena em um buffer interno (geralmente um registrador de dados). O processador pode então obter este item, solicitando a leitura do registrador do módulo.
-* **Escrita:** O processador fornece um item de dados (byte ou palavra) ao módulo de E/S. O módulo então o transmite do seu registrador de dados para o periférico.
+### Execução Básica
 
-Em um cenário típico de E/S programada, o processador deve emitir uma instrução de verificação de estado para cada palavra de dados transferida. Esta necessidade de uma espera ativa (loop de verificação de estado) a cada transferência de palavra é a principal desvantagem dessa técnica, pois mantém o processador ocupado desnecessariamente.
+```bash
+# Compilar e executar o simulador
+make run
+```
 
-<img width="745" height="506" alt="image" src="https://github.com/user-attachments/assets/c85bea54-5df3-44da-b893-2a0d93e3d8d4" />
-Referência: William Stallings, "Arquitetura e Organização de Computadores", 10ª edição.
+**Saída esperada:**
+```
+ASMPipe I/O Simulator iniciado
+Escrevendo dados no pipe...
+Lendo dados do pipe...
+Dados: Hello, ASMPipe!
+```
+
+## 🏗️ Arquitetura do Simulador
+
+### Estrutura do Buffer Circular
+
+```
+┌─────────────────────────────────────────┐
+│           Buffer Circular               │
+│  ┌───┬───┬───┬───┬───┬───┬───┬───┐     │
+│  │ A │ B │ C │   │   │   │   │   │     │
+│  └───┴───┴───┴───┴───┴───┴───┴───┘     │
+│    ↑           ↑                        │
+│  read_ptr   write_ptr                   │
+└─────────────────────────────────────────┘
+```
+
+### Componentes Principais
+
+1. **Buffer Circular** (`pipe_buffer`): Array de 256 bytes
+2. **Ponteiros de Controle**:
+   - `read_ptr`: Posição atual de leitura
+   - `write_ptr`: Posição atual de escrita
+   - `data_count`: Contador de dados no buffer
+
+### Funções Implementadas
+
+#### `pipe_write(esi, ecx)`
+- **Entrada**: ESI = ponteiro para dados, ECX = tamanho
+- **Função**: Escreve dados no pipe
+- **Retorno**: EAX = 0 (sucesso) ou -1 (erro)
+
+#### `pipe_read(edi, ecx)`
+- **Entrada**: EDI = buffer destino, ECX = tamanho máximo
+- **Função**: Lê dados do pipe
+- **Retorno**: EAX = bytes lidos
+
+#### `get_pipe_status()`
+- **Função**: Obtém status do pipe
+- **Retorno**: EAX = dados disponíveis, EBX = espaço livre
+
+#### `clear_pipe()`
+- **Função**: Limpa o pipe (reset completo)
+
+## 🧪 Testes e Demonstrações
+
+### Cenários de Teste Implementados
+
+1. **Operações Básicas**: Escrita e leitura simples
+2. **Buffer Cheio**: Tentativa de escrita em buffer lotado
+3. **Buffer Vazio**: Tentativa de leitura de buffer vazio
+4. **Múltiplas Operações**: Várias escritas e leituras sequenciais
+
+### Executar Testes
+
+```bash
+# Executar simulador básico
+./asmpipe
+
+# Para testes mais avançados (se implementado)
+# ./demo
+```
+
+## 📊 Técnicas de E/S Demonstradas
+
+### E/S Programada
+O simulador implementa **E/S programada**, onde:
+- O processador controla toda a transferência de dados
+- Verificação ativa do status do buffer
+- Controle direto de ponteiros e memória
+- Sem uso de interrupções ou DMA
+
+### Vantagens da Implementação
+- **Controle Total**: Gerenciamento direto da memória
+- **Educacional**: Demonstra conceitos fundamentais
+- **Simplicidade**: Sem dependências de SO
+- **Performance**: Acesso direto aos registradores
+
+### Limitações
+- **Polling**: Verificação ativa consome CPU
+- **Bloqueante**: Operações são síncronas
+- **Tamanho Fixo**: Buffer limitado a 256 bytes
+
+## 🔍 Detalhes Técnicos
+
+### Registradores Utilizados
+- **EAX**: Valores de retorno e syscalls
+- **EBX**: Parâmetros auxiliares
+- **ECX**: Contadores e tamanhos
+- **EDX**: Dados e parâmetros
+- **ESI**: Ponteiro fonte (source)
+- **EDI**: Ponteiro destino (destination)
+
+### Syscalls Linux Utilizadas
+- **sys_write (4)**: Saída para terminal
+- **sys_exit (1)**: Finalização do programa
+
+### Formato do Executável
+- **Formato**: ELF32 (32-bit)
+- **Arquitetura**: x86 (i386)
+- **Seções**: .data, .bss, .text
+
+## 📁 Estrutura do Projeto
+
+```
+ASMPipe-I-O-E-S-Simulator/
+├── asmpipe.asm          # Código principal do simulador
+├── demo.asm             # Demonstrações avançadas
+├── Makefile             # Automação de build
+├── README.md            # Esta documentação
+└── LICENSE              # Licença do projeto
+```
+
+## 🐛 Tratamento de Erros
+
+### Condições de Erro
+1. **Buffer Cheio**: Tentativa de escrita quando `data_count == BUFFER_SIZE`
+2. **Buffer Vazio**: Tentativa de leitura quando `data_count == 0`
+3. **Parâmetros Inválidos**: Ponteiros nulos ou tamanhos inválidos
+
+### Mensagens de Erro
+- `"ERRO: Pipe cheio!"`: Buffer não tem espaço
+- `"ERRO: Pipe vazio!"`: Não há dados para ler
+
+## 🎯 Objetivos Educacionais
+
+Este projeto demonstra:
+- **Programação em Assembly**: Sintaxe e estruturas x86
+- **Gerenciamento de Memória**: Ponteiros e buffers
+- **Algoritmos Circulares**: Implementação de buffer circular
+- **Sincronização**: Controle de acesso a recursos compartilhados
+- **E/S de Baixo Nível**: Operações sem abstração do SO
+- **Debugging**: Técnicas de depuração em Assembly
+
+## 📚 Referências
+
+- William Stallings, "Arquitetura e Organização de Computadores", 10ª edição
+- Intel 64 and IA-32 Architectures Software Developer's Manual
+- Linux System Call Interface
+- NASM Documentation
+
+## 🤝 Contribuições
+
+Contribuições são bem-vindas! Áreas de melhoria:
+- Implementação de DMA simulado
+- Suporte a interrupções
+- Interface gráfica simples
+- Testes automatizados
+- Documentação adicional
+
+## 📄 Licença
+
+Este projeto está licenciado sob os termos especificados no arquivo LICENSE.
+
+---
+
+**Desenvolvido para fins educacionais - Engenharia de Software DGT0281**
 
