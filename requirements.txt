@@ -1,0 +1,17 @@
+# Python dependencies for ASMPipe I/O E/S Simulator
+# GUI Framework
+# tkinter is included in Python standard library
+
+# Development and testing dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
+flake8>=6.0.0
+black>=23.0.0
+
+# Optional: For enhanced GUI features
+# pillow>=9.0.0
+# matplotlib>=3.5.0
+
+# Documentation
+# sphinx>=5.0.0
+# sphinx-rtd-theme>=1.0.0
