@@ -57,6 +57,62 @@ sudo apt-get update
 sudo apt-get install nasm build-essential
 ```
 
+## 🐳 Execução com Docker
+
+### Pré-requisitos Docker
+- **Docker** instalado no sistema
+- **Permissões** para executar containers
+
+### Build e Execução
+
+#### Usando Scripts Automatizados
+```bash
+# Build da imagem Docker
+./docker-build.sh
+
+# Execução do container
+./docker-run.sh
+```
+
+#### Comandos Docker Manuais
+```bash
+# Build da imagem
+sudo docker build -t simulador-dma:latest .
+
+# Execução interativa
+sudo docker run -it --rm simulador-dma:latest
+
+# Execução em background
+sudo docker run -d --name dma-simulator simulador-dma:latest
+
+# Execução com volume (para desenvolvimento)
+sudo docker run -it --rm -v $(pwd):/app simulador-dma:latest
+```
+
+### Características da Imagem Docker
+
+- **Base**: Ubuntu 22.04 LTS
+- **Python**: 3.10+ com pip e bibliotecas (colorama, termcolor, rich)
+- **Compiladores**: GCC, G++, NASM (Netwide Assembler)
+- **Ferramentas**: build-essential, make, git, vim
+- **Tamanho**: ~500MB (otimizada)
+- **Ambiente**: Configurado para compilação Assembly e execução do simulador
+
+### Vantagens do Docker
+
+✅ **Portabilidade**: Executa em qualquer sistema com Docker  
+✅ **Consistência**: Ambiente idêntico para todos os usuários  
+✅ **Isolamento**: Não interfere no sistema host  
+✅ **Facilidade**: Setup automático de todas as dependências  
+✅ **Reprodutibilidade**: Resultados consistentes entre execuções  
+
+### Arquivos Docker
+
+- `Dockerfile` - Definição da imagem com todas as dependências
+- `.dockerignore` - Otimização do build excluindo arquivos desnecessários
+- `docker-build.sh` - Script automatizado para build da imagem
+- `docker-run.sh` - Script para execução do container
+
 ## 🔧 Compilação e Execução
 
 ### Comandos Disponíveis
