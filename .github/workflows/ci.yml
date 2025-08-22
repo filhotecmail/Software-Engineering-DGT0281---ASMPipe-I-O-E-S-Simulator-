@@ -39,8 +39,7 @@ jobs:
       run: |
         mkdir -p build
         nasm -f elf32 src/assembly/dma_controller.asm -o build/dma_controller.o
-        nasm -f elf32 src/assembly/bus_arbitration.asm -o build/bus_arbitration.o
-        nasm -f elf32 src/assembly/memory_manager.asm -o build/memory_manager.o
+        nasm -f elf32 src/assembly/asmpipe_dma.asm -o build/asmpipe_dma.o
     
     - name: Run Python tests
       run: |
