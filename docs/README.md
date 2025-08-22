@@ -106,6 +106,15 @@ sudo docker run -it --rm -v $(pwd):/app simulador-dma:latest
 ✅ **Facilidade**: Setup automático de todas as dependências  
 ✅ **Reprodutibilidade**: Resultados consistentes entre execuções  
 
+### Correções e Melhorias Docker
+
+🔧 **Atualizações Recentes**:
+- **Caminhos Corrigidos**: Ajustados os caminhos dos arquivos Python para `src/python/*.py`
+- **Comando Padrão**: Atualizado para `src/python/gui_dma_tester.py`
+- **Estrutura Organizada**: Compatibilidade com nova organização de pastas
+- **Permissões**: Configuração adequada de permissões para arquivos Python
+- **Build Otimizado**: Processo de build mais eficiente e confiável
+
 ### Arquivos Docker
 
 - `Dockerfile` - Definição da imagem com todas as dependências
