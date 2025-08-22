@@ -1,32 +1,34 @@
 ; DMA Controller Simulator
-; Simulador de Controlador DMA (Direct Memory Access) em Assembly x86
-; Implementa transferência automática de dados sem intervenção do processador
+;  Eu estou aqui criando um simulador de controlador DMA em Assembly x86
+; Aqui eu implemento transferência automática de dados porque quero que o processador
+; não precise ficar perdendo tempo movendo dados manualmente
 
 section .data
-    ; Configurações do DMA
-    DMA_CHANNELS equ 4         ; Número de canais DMA
-    DMA_BLOCK_SIZE equ 64      ; Tamanho padrão do bloco DMA
+    ; Aqui eu defino as configurações básicas do meu DMA
+    DMA_CHANNELS equ 4         ; Eu escolhi 4 canais porque é um número bom para demonstrar
+    DMA_BLOCK_SIZE equ 64      ; Aqui eu pego 64 bytes como padrão porque é eficiente
     
-    ; Estados do canal DMA
-    DMA_IDLE equ 0
-    DMA_ACTIVE equ 1
-    DMA_COMPLETE equ 2
-    DMA_ERROR equ 3
+    ; Aqui eu defino os estados que meus canais DMA podem ter
+    DMA_IDLE equ 0             ; Canal parado, esperando trabalho
+    DMA_ACTIVE equ 1           ; Canal trabalhando duro transferindo dados
+    DMA_COMPLETE equ 2         ; Canal terminou o trabalho com sucesso
+    DMA_ERROR equ 3            ; Algo deu errado, preciso investigar
     
-    ; Tipos de transferência
-    DMA_MEM_TO_MEM equ 0
-    DMA_MEM_TO_IO equ 1
-    DMA_IO_TO_MEM equ 2
+    ; Aqui eu defino os tipos de transferência que posso fazer
+    DMA_MEM_TO_MEM equ 0       ; Memória para memória - o mais comum
+    DMA_MEM_TO_IO equ 1        ; Memória para dispositivo - para saída
+    DMA_IO_TO_MEM equ 2        ; Dispositivo para memória - para entrada
     
-    ; Estrutura do canal DMA (32 bytes por canal)
-    ; Offset 0: Source Address (4 bytes)
-    ; Offset 4: Destination Address (4 bytes)
-    ; Offset 8: Transfer Count (4 bytes)
-    ; Offset 12: Control Register (4 bytes)
-    ; Offset 16: Status Register (4 bytes)
-    ; Offset 20: Current Address (4 bytes)
-    ; Offset 24: Remaining Count (4 bytes)
-    ; Offset 28: Reserved (4 bytes)
+    ; Aqui eu organizo a estrutura de cada canal DMA (32 bytes por canal)
+    ; Eu faço assim porque preciso guardar todas as informações importantes:
+    ; Offset 0: De onde vou pegar os dados (endereço origem)
+    ; Offset 4: Para onde vou mandar os dados (endereço destino)
+    ; Offset 8: Quantos bytes vou transferir no total
+    ; Offset 12: Como vou fazer a transferência (controle)
+    ; Offset 16: Como está indo a transferência (status)
+    ; Offset 20: Onde estou agora na transferência (endereço atual)
+    ; Offset 24: Quantos bytes ainda faltam transferir
+    ; Offset 28: Espaço reservado para futuras melhorias
     
     dma_channels times (DMA_CHANNELS * 32) db 0  ; Array de canais DMA
     
@@ -48,16 +50,16 @@ section .data
     msg_dma_busy db 'ERRO: Canal DMA ocupado', 0xA, 0
     msg_channel_num db '0', 0xA, 0
     
-    ; Buffer de teste para DMA
+    ; Aqui eu crio um buffer de teste para ver se meu DMA funciona
     dma_test_source db 'DMA Test Data: This is a block transfer test!', 0
     dma_test_source_len equ $ - dma_test_source - 1
     
 section .bss
-    dma_test_dest resb 256     ; Buffer de destino para testes
-    dma_temp_buffer resb 64    ; Buffer temporário para operações DMA
+    dma_test_dest resb 256     ; Aqui eu reservo espaço para onde vão os dados testados
+    dma_temp_buffer resb 64    ; Buffer que eu uso quando preciso de espaço temporário
 
 section .text
-    ; Exportar funções públicas
+    ; Aqui eu exporto as funções que outros arquivos podem usar
     global dma_init
     global dma_setup_channel
     global dma_start_transfer
@@ -66,25 +68,25 @@ section .text
     global dma_performance_test
     global dma_demo
 
-; Função para inicializar o controlador DMA
+; Aqui eu inicializo meu controlador DMA - é a primeira coisa que preciso fazer
 dma_init:
     push eax
     push ebx
     push ecx
     push edi
     
-    ; Limpar todos os canais DMA
+    ; Primeiro eu limpo todos os canais DMA para começar do zero
     mov edi, dma_channels
     mov ecx, (DMA_CHANNELS * 32)
     xor eax, eax
     rep stosb
     
-    ; Inicializar registradores globais
-    mov dword [dma_master_control], 1  ; Habilitar DMA
-    mov dword [dma_interrupt_status], 0
-    mov dword [dma_priority_mask], 0x0F ; Todos os canais habilitados
+    ; Agora eu configuro os registradores principais
+    mov dword [dma_master_control], 1  ; Aqui eu ligo o DMA
+    mov dword [dma_interrupt_status], 0 ; Limpo as interrupções
+    mov dword [dma_priority_mask], 0x0F ; Habilito todos os 4 canais
     
-    ; Resetar contadores
+    ; Eu zero os contadores para começar a contar do início
     mov dword [dma_transfers_completed], 0
     mov dword [dma_bytes_transferred], 0
     mov dword [dma_cycles_saved], 0
@@ -102,43 +104,43 @@ dma_init:
     pop eax
     ret
 
-; Função para configurar um canal DMA
-; Entrada: EAX = canal (0-3), ESI = origem, EDI = destino, ECX = tamanho, EDX = tipo
+; Aqui eu configuro um canal DMA específico com todos os parâmetros
+; Eu recebo: EAX = qual canal (0-3), ESI = de onde pegar, EDI = para onde mandar, ECX = quantos bytes, EDX = tipo
 dma_setup_channel:
     push ebx
     push eax
     
-    ; Verificar se o canal é válido
+    ; Primeiro eu verifico se o canal que me passaram existe
     cmp eax, DMA_CHANNELS
     jge .invalid_channel
     
-    ; Calcular offset do canal (canal * 32)
+    ; Aqui eu calculo onde fica esse canal na memória (cada canal ocupa 32 bytes)
     mov ebx, eax
-    shl ebx, 5                 ; ebx = canal * 32
+    shl ebx, 5                 ; ebx = canal * 32 (multiplico por 32)
     
-    ; Verificar se o canal está livre
-    mov eax, [dma_channels + ebx + 16] ; Status register
+    ; Agora eu verifico se esse canal não está ocupado
+    mov eax, [dma_channels + ebx + 16] ; Eu pego o status do canal
     cmp eax, DMA_ACTIVE
     je .channel_busy
     
-    ; Configurar registradores do canal
-    mov [dma_channels + ebx + 0], esi   ; Source address
-    mov [dma_channels + ebx + 4], edi   ; Destination address
-    mov [dma_channels + ebx + 8], ecx   ; Transfer count
-    mov [dma_channels + ebx + 12], edx  ; Control register (tipo)
-    mov dword [dma_channels + ebx + 16], DMA_IDLE ; Status
-    mov [dma_channels + ebx + 20], esi  ; Current address = source
-    mov [dma_channels + ebx + 24], ecx  ; Remaining count
+    ; Agora eu configuro todos os registradores do canal
+    mov [dma_channels + ebx + 0], esi   ; Aqui eu guardo de onde vou pegar os dados
+    mov [dma_channels + ebx + 4], edi   ; Aqui eu guardo para onde vou mandar
+    mov [dma_channels + ebx + 8], ecx   ; Quantos bytes vou transferir no total
+    mov [dma_channels + ebx + 12], edx  ; Como vou fazer a transferência
+    mov dword [dma_channels + ebx + 16], DMA_IDLE ; Marco como pronto para usar
+    mov [dma_channels + ebx + 20], esi  ; Onde estou agora = início
+    mov [dma_channels + ebx + 24], ecx  ; Quantos bytes ainda faltam = todos
     
-    mov eax, 0                 ; Sucesso
+    mov eax, 0                 ; Tudo certo, canal configurado!
     jmp .setup_exit
     
 .invalid_channel:
-    mov eax, -1                ; Erro: canal inválido
+    mov eax, -1                ; Ops, esse canal não existe
     jmp .setup_exit
     
 .channel_busy:
-    ; Imprimir mensagem de erro
+    ; Aqui eu aviso que o canal está ocupado
     push ecx
     push edx
     mov eax, 4
@@ -148,15 +150,15 @@ dma_setup_channel:
     int 0x80
     pop edx
     pop ecx
-    mov eax, -2                ; Erro: canal ocupado
+    mov eax, -2                ; Canal ocupado, tente mais tarde
     
 .setup_exit:
     pop eax
     pop ebx
     ret
 
-; Função para iniciar transferência DMA
-; Entrada: EAX = canal
+; Aqui eu inicio uma transferência DMA - é quando a mágica acontece!
+; Eu recebo: EAX = qual canal usar
 dma_start_transfer:
     push ebx
     push ecx
@@ -164,20 +166,20 @@ dma_start_transfer:
     push esi
     push edi
     
-    ; Verificar se o canal é válido
+    ; Primeiro eu verifico se o canal existe
     cmp eax, DMA_CHANNELS
     jge .invalid_channel_start
     
-    ; Calcular offset do canal
+    ; Aqui eu calculo onde está esse canal na memória
     mov ebx, eax
     shl ebx, 5
     
-    ; Verificar se o canal está configurado
-    mov ecx, [dma_channels + ebx + 16] ; Status
+    ; Agora eu verifico se o canal está pronto para trabalhar
+    mov ecx, [dma_channels + ebx + 16] ; Eu pego o status
     cmp ecx, DMA_IDLE
     jne .channel_not_ready
     
-    ; Imprimir mensagem de início
+    ; Aqui eu aviso que vou começar a transferência
     push eax
     push ebx
     mov eax, 4
@@ -188,7 +190,7 @@ dma_start_transfer:
     pop ebx
     pop eax
     
-    ; Imprimir número do canal
+    ; Eu mostro qual canal está trabalhando
     push eax
     add eax, '0'
     mov [msg_channel_num], al
