@@ -44,7 +44,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Definir permissões adequadas
-RUN chmod +x *.py
+RUN chmod +x src/python/*.py
 
 # Criar diretório para arquivos temporários de compilação
 RUN mkdir -p /tmp/asm_build
@@ -53,7 +53,7 @@ RUN mkdir -p /tmp/asm_build
 EXPOSE 8080
 
 # Comando padrão para executar o simulador
-CMD ["python3", "gui_dma_tester.py"]
+CMD ["python3", "src/python/gui_dma_tester.py"]
 
 # Informações do container
 LABEL maintainer="Simulador DMA Team"
