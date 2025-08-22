@@ -27,8 +27,8 @@ DMA_TARGET = $(BIN_DIR)/asmpipe_dma
 DMA_CONTROLLER = $(ASM_DIR)/dma_controller.asm
 DMA_ADVANCED = $(ASM_DIR)/dma_advanced.asm
 
-# Regra padrão - compila ambas as versões
-all: $(TARGET) $(DMA_TARGET)
+# Regra padrão - compila apenas a versão original
+all: $(TARGET)
 
 # Compilar apenas versão original
 original: $(TARGET)
