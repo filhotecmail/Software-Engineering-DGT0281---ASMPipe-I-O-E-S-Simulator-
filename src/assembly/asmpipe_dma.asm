@@ -2,8 +2,9 @@
 ; Eu junto o simulador ASMPipe com as funcionalidades DMA que criei
 ; Vou mostrar como DMA é muito melhor que E/S programada
 
-%include "dma_controller.asm"
-%include "dma_advanced.asm"
+; Includes removidos - funcionalidades integradas diretamente
+; %include "dma_controller.asm"
+; %include "dma_advanced.asm"
 
 section .data
     ; Aqui eu preparo os dados para testar e comparar

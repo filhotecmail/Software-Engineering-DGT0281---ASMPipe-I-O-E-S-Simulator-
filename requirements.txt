@@ -2,6 +2,9 @@
 # GUI Framework
 # tkinter is included in Python standard library
 
+# Runtime dependencies
+colorama>=0.4.6
+
 # Development and testing dependencies
 pytest>=7.0.0
 pytest-cov>=4.0.0

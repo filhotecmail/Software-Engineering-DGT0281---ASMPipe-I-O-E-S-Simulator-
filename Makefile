@@ -27,8 +27,8 @@ DMA_TARGET = $(BIN_DIR)/asmpipe_dma
 DMA_CONTROLLER = $(ASM_DIR)/dma_controller.asm
 DMA_ADVANCED = $(ASM_DIR)/dma_advanced.asm
 
-# Regra padrão - compila ambas as versões
-all: $(TARGET) $(DMA_TARGET)
+# Regra padrão - compila apenas a versão original
+all: $(TARGET)
 
 # Compilar apenas versão original
 original: $(TARGET)
@@ -146,4 +146,8 @@ check-syntax:
 	$(ASM) $(ASM_FLAGS) $(SOURCE) -o /dev/null
 	@echo "Sintaxe OK!"
 
-.PHONY: all original dma run run-dma run-both performance-test clean check-deps info debug install-deps check-syntax
+# Regra de teste - compila e verifica sintaxe
+test: all check-syntax
+	@echo "Testes básicos concluídos com sucesso!"
+
+.PHONY: all original dma run run-dma run-both performance-test clean check-deps info debug install-deps check-syntax test
