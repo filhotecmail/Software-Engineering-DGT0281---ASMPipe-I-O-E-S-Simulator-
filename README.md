@@ -336,9 +336,10 @@ O simulador implementa **E/S programada**, onde:
 
 Para futuras melhorias, consulte os issues criados:
 1. **Suporte a Interrupções** - Sistema de interrupções simulado
-2. **Interface Gráfica** - Visualização em tempo real do buffer e DMA
+2. ✅ **Interface Gráfica** - ~~Visualização em tempo real do buffer e DMA~~ **CONCLUÍDO!**
 3. **Testes Automatizados** - Suite completa de testes
 4. **Documentação Expandida** - Tutoriais e exemplos avançados
+5. **Integração Assembly-Python** - Execução real do código Assembly via interface
 
 ```
 ASMPipe-I-O-E-S-Simulator/
@@ -377,14 +378,43 @@ Este projeto demonstra:
 - Linux System Call Interface
 - NASM Documentation
 
-## 🤝 Contribuições
+## 🎮 Interface Gráfica Interativa
 
-Contribuições são bem-vindas! Áreas de melhoria:
-- Implementação de DMA simulado
-- Suporte a interrupções
-- Interface gráfica simples
-- Testes automatizados
-- Documentação adicional
+### Nova Interface Colorida para Testes
+
+O projeto agora inclui uma interface gráfica colorida e interativa para testar o simulador DMA de forma visual e educativa!
+
+#### Como usar:
+```bash
+# Instalar dependências e executar
+./run_gui.sh
+
+# Ou manualmente
+pip install colorama
+python3 gui_dma_tester.py
+```
+
+#### Funcionalidades da Interface:
+- 🎨 **Menu colorido e interativo** com navegação intuitiva
+- 🧪 **Cenários de teste realistas** simulando a experiência de um estudante
+- 📊 **Visualização de resultados** com gráficos em ASCII e estatísticas
+- 💭 **Mensagens motivacionais** e reflexões de aprendizado
+- 🎭 **Simulação de situações reais**: debug, apresentações, madrugadas de código
+- ⚡ **Testes de performance** com comparações visuais
+
+#### Cenários Disponíveis:
+1. **Primeiro Teste DMA** - A emoção de ver o código funcionando pela primeira vez
+2. **Sessão de Debug** - Encontrando e corrigindo erros como um verdadeiro engenheiro
+3. **Comparação de Performance** - Análise científica DMA vs E/S Programada
+4. **Arbitragem de Barramento** - Descobrindo como o sistema resolve conflitos
+5. **Madrugada de Código** - Programando até tarde para entregar o trabalho
+6. **Preparação para Apresentação** - Validando tudo antes de mostrar para a turma
+
+### Arquivos da Interface:
+- `gui_dma_tester.py` - Interface principal colorida
+- `test_scenarios.py` - Cenários realistas de teste
+- `run_gui.sh` - Script de instalação e execução
+- `requirements.txt` - Dependências Python
 
 ## 📄 Licença
 
