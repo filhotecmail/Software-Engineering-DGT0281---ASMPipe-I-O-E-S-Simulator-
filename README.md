@@ -1,14 +1,8 @@
 <div align="center">
 
-# UNIVERSIDADE ESTACIO
-### DEPARTAMENTO DE ENGENHARIA DE COMPUTAÇÃO 
-
----
-
 # ASMPipe I/O E/S Simulator
 ## Simulador Educacional de Pipeline Assembly com DMA e Controlador de Barramento
 **Data:** Janeiro de 2025  
-**Semestre:** 2024.2
 
 ## 📋 Resumo 
 
