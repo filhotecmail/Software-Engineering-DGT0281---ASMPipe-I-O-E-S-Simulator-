@@ -1,15 +1,9 @@
 <div align="center">
 ---
-
 # ASMPipe I/O E/S Simulator
 ## Simulador Educacional de Pipeline Assembly com DMA e Controlador de Barramento
----
-
-![UFRN Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Bras%C3%A3o_da_Universidade_Federal_do_Rio_Grande_do_Norte.svg/200px-Bras%C3%A3o_da_Universidade_Federal_do_Rio_Grande_do_Norte.svg.png)
-
 </div>
 
----
 
 ## 📋 Resumo 
 
